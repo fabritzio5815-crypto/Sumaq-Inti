@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sumaq Inti</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+<style>
+  :root{--turq:#14b8a6;--turq-d:#0f9488;--yellow:#fbbf24;--bg:#e8f6fb;--text:#1e3a4c;--muted:#6b8494}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Nunito',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+  .sidebar{width:210px;background:#fff;padding:20px 14px;display:flex;flex-direction:column;gap:6px;border-right:1px solid #d9eaf0}
+  .logo{font-weight:800;font-size:20px;line-height:1;margin-bottom:20px;display:flex;gap:8px;align-items:center}
+  .logo span{color:var(--turq-d)}
+  .nav a{display:flex;gap:10px;align-items:center;padding:11px 14px;border-radius:12px;color:var(--text);text-decoration:none;font-weight:600;font-size:14px;transition:.2s}
+  .nav a:hover{background:#e6f7f5}
+  .nav a.active{background:#d4f1ee;color:var(--turq-d)}
+
+  .main{flex:1;padding:18px 24px;max-width:1200px}
+  .topbar{display:flex;align-items:center;gap:16px;margin-bottom:22px}
+  .search{flex:1;background:#fff;border-radius:999px;padding:11px 18px;border:none;font-family:inherit;font-size:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .user{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:700;cursor:pointer}
+  .user small{display:block;color:var(--muted);font-weight:600}
+  .avatar{width:38px;height:38px;border-radius:50%;background:var(--turq);color:#fff;display:grid;place-items:center;font-weight:800;text-transform:uppercase}
+
+  .layout{display:grid;grid-template-columns:1fr 290px;gap:20px}
+  h1{font-size:28px;font-weight:800}
+  .sub{color:var(--muted);margin:2px 0 18px}
+  h3{font-size:16px;margin:6px 0 12px}
+
+  .card{background:#fff;border-radius:18px;padding:18px;box-shadow:0 4px 14px rgba(20,120,140,.08);transition:.25s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(20,120,140,.14)}
+
+  .level{display:flex;gap:18px;align-items:center;margin-bottom:16px}
+  .badge{width:70px;height:70px;border-radius:50%;background:linear-gradient(135deg,#fde68a,var(--yellow));display:grid;place-items:center;font-size:34px;flex-shrink:0}
+  .level-info{flex:1}
+  .level-info h2{font-size:18px}
+  .level-info p{color:var(--muted);font-size:14px;margin-bottom:8px}
+  .bar{height:10px;background:#e2eef2;border-radius:99px;overflow:hidden}
+  .bar>div{height:100%;width:0;background:linear-gradient(90deg,var(--turq),#34d399);border-radius:99px;transition:width 1.2s ease}
+  .points{font-size:12px;color:var(--muted);margin-top:5px}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px}
+  .stat{display:flex;align-items:center;gap:12px}
+  .stat .ico{font-size:28px}
+  .stat small{color:var(--muted);font-size:12px;display:block}
+  .stat b{font-size:20px}
+
+  .steps{display:flex;justify-content:space-between;position:relative;margin-bottom:20px}
+  .steps::before{content:"";position:absolute;top:36px;left:8%;right:8%;height:3px;background:#d5e6ec;z-index:0}
+  .step{text-align:center;font-size:12px;font-weight:700;position:relative;z-index:1;flex:1}
+  .step small{display:block;color:var(--muted);font-weight:600}
+  .dot{width:52px;height:52px;border-radius:50%;margin:0 auto 6px;display:grid;place-items:center;font-size:22px;background:#e2eaee;color:#9bb0ba}
+  .step.done .dot{background:var(--turq);color:#fff}
+  .step.active .dot{background:var(--turq-d);color:#fff;width:62px;height:62px;margin-top:-5px;box-shadow:0 0 0 6px #c9efe9}
+
+  .courses{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+  .course{display:flex;flex-direction:column;gap:8px}
+  .course .top{display:flex;gap:10px;align-items:center}
+  .course .ci{font-size:28px}
+  .course b{font-size:13px;line-height:1.2}
+  .course small{color:var(--muted);font-size:11px}
+  .row{display:flex;align-items:center;gap:8px;font-size:11px;font-weight:700}
+  .row .bar{flex:1;height:7px}
+  .btn{border:none;background:var(--turq);color:#fff;font-family:inherit;font-weight:700;padding:9px;border-radius:10px;cursor:pointer;font-size:13px;transition:.2s}
+  .btn:hover{background:var(--turq-d)}
+  .btn.out{background:#fff;color:var(--turq-d);border:2px solid var(--turq)}
+
+  .side{display:flex;flex-direction:column;gap:14px}
+  .promo{background:linear-gradient(135deg,#bff0ea,#a5d8f3);position:relative;overflow:hidden;min-height:110px}
+  .promo h4{font-size:17px;margin-bottom:4px}
+  .promo p{font-size:13px;max-width:150px}
+  .promo .art{position:absolute;right:10px;bottom:4px;font-size:54px}
+  .promo.sun{background:linear-gradient(135deg,#fff3c4,#bde7f5)}
+  .promo.sun h4{max-width:160px}
+  .cert{display:flex;gap:12px;align-items:center}
+  .cert .ci{font-size:30px}
+  .cert b{font-size:14px}
+  .cert small{color:var(--muted);font-size:12px}
+  .logro{display:flex;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid #eef3f5}
+  .logro:last-child{border:none}
+  .logro .li{font-size:22px}
+  .logro b{display:block;font-size:12px}
+  .logro small{color:var(--muted);font-size:11px}
+  .logro .pt{margin-left:auto;text-align:right;color:var(--turq-d);font-weight:800;font-size:11px}
+  .logro .pt span{display:block;color:var(--muted);font-weight:600}
+
+  /* Ventana de registro */
+  .overlay{position:fixed;inset:0;background:rgba(30,58,76,.55);display:none;place-items:center;z-index:10;padding:16px}
+  .overlay.show{display:grid}
+  .modal{background:#fff;border-radius:20px;padding:28px;width:100%;max-width:360px;box-shadow:0 12px 40px rgba(0,0,0,.25)}
+  .modal h2{font-size:22px;margin-bottom:4px}
+  .modal p{color:var(--muted);font-size:14px;margin-bottom:16px}
+  .modal label{display:block;font-size:13px;font-weight:700;margin-bottom:4px}
+  .modal input{width:100%;padding:11px 14px;border:2px solid #d5e6ec;border-radius:12px;font-family:inherit;font-size:15px;margin-bottom:14px;outline:none}
+  .modal input:focus{border-color:var(--turq)}
+  .modal .btn{width:100%;padding:12px;font-size:15px}
+
+  @media(max-width:1000px){.layout{grid-template-columns:1fr}}
+  @media(max-width:760px){.sidebar{display:none}.stats,.courses{grid-template-columns:1fr}.steps{overflow-x:auto;gap:14px}.step{min-width:80px}.steps::before{display:none}}
+</style>
+</head>
+<body>
+
+<!-- Ventana de registro -->
+<div class="overlay" id="registro">
+  <div class="modal">
+    <h2>☀️ Bienvenido a Sumaq Inti</h2>
+    <p>Cuéntanos cómo te llamas para empezar.</p>
+    <label for="inNombre">Nombre</label>
+    <input id="inNombre" type="text" placeholder="Ej: Ana Sánchez" maxlength="40">
+    <label for="inGrado">Grado y sección (opcional)</label>
+    <input id="inGrado" type="text" placeholder="Ej: 3°B" maxlength="10">
+    <button class="btn" id="btnEntrar">Entrar</button>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <div class="logo">☀️ <div>SUMAQ<br><span>INTI</span></div></div>
+  <nav class="nav">
+    <a href="#" class="active">🏠 Inicio</a>
+    <a href="#">📘 Mis cursos</a>
+    <a href="#">🎮 Simuladores</a>
+    <a href="#">🏆 Retos</a>
+    <a href="#">🎓 Certificaciones</a>
+    <a href="#">📈 Mi progreso</a>
+  </nav>
+</aside>
+
+<div class="main">
+  <header class="topbar">
+    <input class="search" type="text" placeholder="🔍 Buscar cursos, temas o simuladores...">
+    <span>🔔</span>
+    <div class="user" id="userBox" title="Haz clic para cambiar tu nombre">
+      <div class="avatar" id="avatar">A</div>
+      <div><span id="userName">Ana Sánchez</span><small id="userGrado">3°B</small></div>
+    </div>
+  </header>
+
+  <div class="layout">
+    <div>
+      <h1>¡Hola, <span id="saludo">Ana</span>! 👋</h1>
+      <p class="sub">Cada paso cuenta. Sigue avanzando.</p>
+
+      <section class="card level">
+        <div class="badge">⭐</div>
+        <div class="level-info">
+          <h2>Nivel 3</h2>
+          <p>Explorador Financiero</p>
+          <div class="bar"><div class="fill" data-value="64"></div></div>
+          <div class="points">320 / 500 puntos</div>
+        </div>
+      </section>
+
+      <section class="stats">
+        <div class="card stat"><span class="ico">📋</span><div><small>Cursos completados</small><b>2 / 5</b></div></div>
+        <div class="card stat"><span class="ico">🎮</span><div><small>Simuladores usados</small><b>3</b></div></div>
+        <div class="card stat"><span class="ico">🛡️</span><div><small>Insignias obtenidas</small><b>4</b></div></div>
+      </section>
+
+      <h3>Tu progreso</h3>
+      <section class="card steps">
+        <div class="step done"><div class="dot">✓</div>Nivel 1<small>Básico</small></div>
+        <div class="step done"><div class="dot">✓</div>Nivel 2<small>Aventurero</small></div>
+        <div class="step active"><div class="dot">★</div>Nivel 3<small>Explorador</small></div>
+        <div class="step"><div class="dot">🔒</div>Nivel 4<small>Inversor</small></div>
+        <div class="step"><div class="dot">🔒</div>Nivel 5<small>Experto</small></div>
+      </section>
+
+      <h3>Próximos cursos</h3>
+      <section class="courses">
+        <div class="card course">
+          <div class="top"><span class="ci">📘</span><div><b>Educación financiera para la vida</b><br><small>Módulo 3 · 45 min</small></div></div>
+          <div class="row"><div class="bar"><div class="fill" data-value="60"></div></div>60%</div>
+          <button class="btn">Continuar</button>
+        </div>
+        <div class="card course">
+          <div class="top"><span class="ci">💻</span><div><b>Uso de simuladores financieros</b><br><small>Módulo 1 · 30 min</small></div></div>
+          <div class="row"><div class="bar"><div class="fill" data-value="0"></div></div>0%</div>
+          <button class="btn out">Comenzar</button>
+        </div>
+        <div class="card course">
+          <div class="top"><span class="ci">🛡️</span><div><b>Seguros y protección financiera</b><br><small>Módulo 2 · 40 min</small></div></div>
+          <div class="row"><div class="bar"><div class="fill" data-value="25"></div></div>25%</div>
+          <button class="btn">Continuar</button>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <div class="card promo">
+        <h4>¡Vas muy bien!</h4>
+        <p>Estás más cerca de la certificación.</p>
+        <span class="art">🧑‍🎓</span>
+      </div>
+      <div class="card cert">
+        <span class="ci">🏅</span>
+        <div><b>Certificación digital</b><br><small>Completa tus módulos y obtén tu certificado.</small></div>
+      </div>
+      <div class="card promo sun">
+        <h4>¡Sigue explorando y construyendo tu futuro!</h4>
+        <span class="art">⛰️</span>
+      </div>
+      <div class="card">
+        <h3>Últimos logros</h3>
+        <div class="logro"><span class="li">🎖️</span><div><b>Primer simulador completado</b><small>Simuladores</small></div><div class="pt">+50 puntos<span>12 oct 2026</span></div></div>
+        <div class="logro"><span class="li">🎖️</span><div><b>Explorador financiero</b><small>Nivel 3</small></div><div class="pt">+50 puntos<span>10 oct 2026</span></div></div>
+        <div class="logro"><span class="li">🎖️</span><div><b>Reto ahorro</b><small>Retos</small></div><div class="pt">+30 puntos<span>8 oct 2026</span></div></div>
+      </div>
+    </aside>
+  </div>
+</div>
+
+<script>
+  const $ = id => document.getElementById(id);
+
+  function mostrarUsuario(nombre, grado){
+    $('userName').textContent = nombre;
+    $('userGrado').textContent = grado || '';
+    $('saludo').textContent = nombre.split(' ')[0];
+    $('avatar').textContent = nombre.charAt(0);
+  }
+
+  function cargarUsuario(){
+    let u = null;
+    try { u = JSON.parse(localStorage.getItem('sumaqUsuario')); } catch(e){}
+    if (u && u.nombre){ mostrarUsuario(u.nombre, u.grado); }
+    else { $('registro').classList.add('show'); }
+  }
+
+  function guardarUsuario(){
+    const nombre = $('inNombre').value.trim();
+    const grado = $('inGrado').value.trim();
+    if (!nombre){ $('inNombre').focus(); return; }
+    try { localStorage.setItem('sumaqUsuario', JSON.stringify({nombre, grado})); } catch(e){}
+    mostrarUsuario(nombre, grado);
+    $('registro').classList.remove('show');
+  }
+
+  $('btnEntrar').addEventListener('click', guardarUsuario);
+  $('inNombre').addEventListener('keydown', e => { if (e.key === 'Enter') guardarUsuario(); });
+  $('inGrado').addEventListener('keydown', e => { if (e.key === 'Enter') guardarUsuario(); });
+
+  // Clic en el nombre de arriba para cambiarlo
+  $('userBox').addEventListener('click', () => {
+    $('inNombre').value = $('userName').textContent;
+    $('inGrado').value = $('userGrado').textContent;
+    $('registro').classList.add('show');
+  });
+
+  window.addEventListener('load', () => {
+    cargarUsuario();
+    document.querySelectorAll('.fill').forEach(f => f.style.width = f.dataset.value + '%');
+  });
+</script>
+</body>
+</html>
